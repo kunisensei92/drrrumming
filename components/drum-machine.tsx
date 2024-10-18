@@ -774,7 +774,7 @@ export function DrumMachine() {
           </button>
         </div>
       </div>
-      <div className="w-full max-w-[400px] mx-auto h-24 bg-gray-200 flex items-center justify-center">
+      <div className="w-full max-w-[400px] mx-auto h-24 flex items-center justify-center">
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2235699957137388"
           crossOrigin="anonymous"></script>
       <ins className="adsbygoogle"
