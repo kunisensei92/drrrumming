@@ -778,11 +778,9 @@ export function DrumMachine() {
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2235699957137388"
           crossOrigin="anonymous"></script>
       <ins className="adsbygoogle"
-          style={{ display: 'block' }}
+          style={{ display: 'inline-block', width: '400px', height: '96px' }}
           data-ad-client="ca-pub-2235699957137388"
-          data-ad-slot="8621285181"
-          data-ad-format="auto"
-          data-full-width-responsive="true"></ins>
+          data-ad-slot="8621285181"></ins>
       <script>
           (adsbygoogle = window.adsbygoogle || []).push({});
       </script>
