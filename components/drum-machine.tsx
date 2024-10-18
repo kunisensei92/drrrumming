@@ -5,6 +5,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Palette, Moon, Sun, HelpCircle, Loader2 } from 'lucide-react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Loader2 as Spinner } from "lucide-react"
+import WebApp from '@twa-dev/sdk'
+
 
 const drumKits = {
   "Vibrant Kit": [
@@ -419,7 +421,8 @@ export function DrumMachine() {
       }
       await initializePads(currentKit as "Vibrant Kit" | "Drift Kit" | "Techno Kit" | "-- empty kit --")
       setIsLoading(false)
-      setIsKitLoading(false) // Added to set loading state to false after kit loads
+      setIsKitLoading(false) 
+      WebApp.ready();// Added to set loading state to false after kit loads
     }
     loadApp()
   }, [currentKit, initializePads, pads.length])
