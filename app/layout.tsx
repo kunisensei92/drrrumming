@@ -19,6 +19,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
         <title>Drum Machine</title>
         <meta name="description" content={metadata.description ?? "Default Description"} />
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2235699957137388" crossOrigin="anonymous"></script>
       </head>
       <body
         className={`antialiased`}
