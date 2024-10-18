@@ -775,7 +775,17 @@ export function DrumMachine() {
         </div>
       </div>
       <div className="w-full max-w-[400px] mx-auto h-24 bg-gray-200 flex items-center justify-center">
-        <p className="text-gray-500">Ad Space</p>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2235699957137388"
+          crossOrigin="anonymous"></script>
+      <ins className="adsbygoogle"
+          style={{ display: 'block' }}
+          data-ad-client="ca-pub-2235699957137388"
+          data-ad-slot="8621285181"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
       </div>
       <Dialog open={isHelpOpen} onOpenChange={setIsHelpOpen}>
         <DialogContent className={`${currentColorPalette.drumPad} max-w-[300px] p-4 mx-auto`}>
