@@ -776,14 +776,16 @@ export function DrumMachine() {
       </div>
       <div className="w-full max-w-[400px] mx-auto h-24 flex items-center justify-center">
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2235699957137388"
-          crossOrigin="anonymous"></script>
-      <ins className="adsbygoogle"
-          style={{ display: 'inline-block', width: '400px', height: '96px' }}
-          data-ad-client="ca-pub-2235699957137388"
-          data-ad-slot="8621285181"></ins>
-      <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
+     crossOrigin="anonymous"></script>
+    <ins className="adsbygoogle"
+        style={{ display: 'block' }}
+        data-ad-client="ca-pub-2235699957137388"
+        data-ad-slot="8621285181"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
       </div>
       <Dialog open={isHelpOpen} onOpenChange={setIsHelpOpen}>
         <DialogContent className={`${currentColorPalette.drumPad} max-w-[300px] p-4 mx-auto`}>
