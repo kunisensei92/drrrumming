@@ -30,7 +30,18 @@ export default function RootLayout({
         <meta name="twitter:title" content="Drum Machine" />
         <meta name="twitter:description" content={metadata.description ?? "Default Description"} />
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2235699957137388" crossOrigin="anonymous"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-S17XRD4T8M"></script>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-S17XRD4T8M');
+          `,
+        }} />
+
         <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-login="drrrumming_bot" data-size="large" data-auth-url="https://www.drrrumm.ing/" data-request-access="write"></script>
+        <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
       </head>
       <body
         className={`antialiased`}
