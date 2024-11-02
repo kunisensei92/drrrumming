@@ -129,7 +129,7 @@ const DrumPad = React.memo(({ pad, onPadTrigger, onShortPress, onLongPress, onDr
     isLongPress.current = false
     longPressTimer.current = setTimeout(() => {
       isLongPress.current = true
-      onLongPress()
+      fileInputRef.current?.click()
     }, longPressDuration)
 
     if (padRef.current) {
@@ -158,12 +158,12 @@ const DrumPad = React.memo(({ pad, onPadTrigger, onShortPress, onLongPress, onDr
       clearTimeout(longPressTimer.current)
       longPressTimer.current = null
       if (!isLongPress.current) {
-        if (pad.isAvailable) {
+        if (!pad.isAvailable) {
+          fileInputRef.current?.click()
+        } else {
           onPadTrigger(e, pad.id)
           setRecentlyTriggered(true)
           setTimeout(() => setRecentlyTriggered(false), 100) // Reset after 100ms
-        } else {
-          onShortPress()
         }
       }
     }
@@ -587,7 +587,7 @@ export default function Component() {
   const [isHelpOpen, setIsHelpOpen] = useState(false)
   const [isKitLoading, setIsKitLoading] = useState(false)
   const [mutedPads, setMutedPads] = useState<boolean[]>(Array(9).fill(false))
-  const fileInputRefs = useRef<(HTMLInputElement | null)[]>([])
+  const fileInputRefs = useRef<(HTMLInputElement | null)[]>(Array(9).fill(null));
   const audioContext = useRef<AudioContext | null>(null)
   const audioBuffers = useRef<{ [key: string]: AudioBuffer }>({})
   const gainNodes = useRef<{ [key: number]: GainNode }>({})
@@ -700,11 +700,13 @@ export default function Component() {
   const handleShortPress = useCallback((padId: number) => {
     const pad = pads[padId]
     if (pad && !pad.isAvailable) {
+      console.log('Short press triggered for pad:', padId)
       fileInputRefs.current[padId]?.click()
     }
   }, [pads])
 
   const handleLongPress = useCallback((padId: number) => {
+    console.log('Long press triggered for pad:', padId)
     fileInputRefs.current[padId]?.click()
   }, [])
 
