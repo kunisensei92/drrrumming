@@ -30,16 +30,24 @@ const VolumeFader: React.FC<{ value: number; onChange: (value: number) => void; 
   const [isDragging, setIsDragging] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
     event.preventDefault();
     setIsDragging(true);
-    updateValue(event);
+    if ('touches' in event) {
+      updateValue(event.touches[0] as unknown as MouseEvent);
+    } else {
+      updateValue(event);
+    }
   };
 
   const handleMouseMove = useCallback(
-    (event: MouseEvent) => {
+    (event: MouseEvent | TouchEvent) => {
       if (isDragging) {
-        updateValue(event);
+        if ('touches' in event) {
+          updateValue(event.touches[0] as unknown as MouseEvent);
+        } else {
+          updateValue(event);
+        }
       }
     },
     [isDragging]
@@ -52,9 +60,13 @@ const VolumeFader: React.FC<{ value: number; onChange: (value: number) => void; 
   useEffect(() => {
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('touchmove', handleMouseMove);
+    document.addEventListener('touchend', handleMouseUp);
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('touchmove', handleMouseMove); 
+      document.removeEventListener('touchend', handleMouseUp);
     };
   }, [handleMouseMove, handleMouseUp]);
 
@@ -62,8 +74,7 @@ const VolumeFader: React.FC<{ value: number; onChange: (value: number) => void; 
     if (sliderRef.current) {
       const rect = sliderRef.current.getBoundingClientRect();
       const position = 1 - (event.clientY - rect.top) / rect.height;
-      const newValue = Math.min(1, Math.max(0, position));
-      onChange(newValue);
+      onChange(Math.min(1, Math.max(0, position)));
     }
   };
 
