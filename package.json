@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node -e \"import('get-port').then(({default: getPort}) => getPort().then(port => import('child_process').then(({default: cp}) => cp.execSync('next dev --port ' + port, {stdio: 'inherit'}))))\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -26,6 +26,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.11.10",
+    "get-port": "^7.1.0",
     "lucide-react": "^0.454.0",
     "next": "14.2.16",
     "react": "^18",

@@ -30,21 +30,21 @@ const VolumeFader: React.FC<{ value: number; onChange: (value: number) => void; 
   const [isDragging, setIsDragging] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+  const handleInteractionStart = (event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
     event.preventDefault();
     setIsDragging(true);
     if ('touches' in event) {
-      updateValue(event.touches[0] as unknown as MouseEvent);
+      updateValue(event.touches[0] as Touch);
     } else {
-      updateValue(event);
+      updateValue(event as unknown as MouseEvent);
     }
   };
 
-  const handleMouseMove = useCallback(
+  const handleInteractionMove = useCallback(
     (event: MouseEvent | TouchEvent) => {
       if (isDragging) {
         if ('touches' in event) {
-          updateValue(event.touches[0] as unknown as MouseEvent);
+          updateValue(event.touches[0]);
         } else {
           updateValue(event);
         }
@@ -53,27 +53,28 @@ const VolumeFader: React.FC<{ value: number; onChange: (value: number) => void; 
     [isDragging]
   );
 
-  const handleMouseUp = useCallback(() => {
+  const handleInteractionEnd = useCallback(() => {
     setIsDragging(false);
   }, []);
 
   useEffect(() => {
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-    document.addEventListener('touchmove', handleMouseMove);
-    document.addEventListener('touchend', handleMouseUp);
+    document.addEventListener('mousemove', handleInteractionMove);
+    document.addEventListener('mouseup', handleInteractionEnd);
+    document.addEventListener('touchmove', handleInteractionMove);
+    document.addEventListener('touchend', handleInteractionEnd);
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-      document.removeEventListener('touchmove', handleMouseMove); 
-      document.removeEventListener('touchend', handleMouseUp);
+      document.removeEventListener('mousemove', handleInteractionMove);
+      document.removeEventListener('mouseup', handleInteractionEnd);
+      document.removeEventListener('touchmove', handleInteractionMove);
+      document.removeEventListener('touchend', handleInteractionEnd);
     };
-  }, [handleMouseMove, handleMouseUp]);
+  }, [handleInteractionMove, handleInteractionEnd]);
 
-  const updateValue = (event: React.MouseEvent<HTMLDivElement> | MouseEvent) => {
+  const updateValue = (event: MouseEvent | Touch) => {
     if (sliderRef.current) {
       const rect = sliderRef.current.getBoundingClientRect();
-      const position = 1 - (event.clientY - rect.top) / rect.height;
+      const clientY = event instanceof MouseEvent ? event.clientY : (event as Touch).clientY;
+      const position = 1 - (clientY - rect.top) / rect.height;
       onChange(Math.min(1, Math.max(0, position)));
     }
   };
@@ -83,13 +84,9 @@ const VolumeFader: React.FC<{ value: number; onChange: (value: number) => void; 
       <div
         ref={sliderRef}
         className={`relative w-full h-full bg-gradient-to-r ${colorPalette.faderStart} ${colorPalette.faderEnd} shadow-inner rounded-[10px] cursor-pointer`}
-        onMouseDown={handleMouseDown}
+        onMouseDown={handleInteractionStart}
+        onTouchStart={handleInteractionStart}
       >
-        <div 
-          className={`absolute z-0 top-1/2 left-1/2 w-[6px] h-[90px] shadow-lg transform -translate-x-1/2 -translate-y-1/2 rounded-[3px] ${
-            colorPalette.faderKnob
-          }`} 
-        />
         <div
           className={`absolute z-10 w-[20px] h-[20px] rounded-full shadow-md cursor-pointer transition-all duration-100 ease-in-out ${
             colorPalette.faderKnob
@@ -438,7 +435,7 @@ const DrumSequencer = ({ currentKit, bpm, setBpm, colorPalette, pads, playSound,
               <div className="p-2 grid grid-cols-9 gap-4">
                 {pads.map((pad, index) => (
                   <div key={pad.id} className="flex flex-col items-center">
-                    <div className={`${colorPalette.text} text-[12px] mb-4 truncate w-full text-center font-semibold`} title={pad.sound.name}>
+                    <div className={`${colorPalette.text} text-[12px] mb-4 truncate w-full text-center`} title={pad.sound.name}>
                       {pad.sound.name}
                     </div>
                     <VolumeFader
@@ -858,11 +855,13 @@ export default function Component() {
     return (
       <div className={`w-full min-h-screen ${currentColorPalette.background} flex flex-col justify-start items-center relative overflow-hidden`}>
         <style jsx global>{`
+          @import url('https://fonts.googleapis.com/css2?family=Gugi&family=Lexend:wght@100..900&display=swap');
+        
           body {
-            font-family: 'Press Start 2P', monospace;
+            font-family: 'Gugi', cursive;
             display: flex;
             font-size: 12px;
-            font-weight: 800;
+            font-weight: 400;
             flex-direction: column;
             min-height: 100vh;
             overflow: hidden;
